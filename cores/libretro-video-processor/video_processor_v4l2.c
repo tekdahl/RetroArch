@@ -364,6 +364,7 @@ RETRO_API void VIDEOPROC_CORE_PREFIX(retro_set_environment)(retro_environment_t 
 
    /* Add the dummy device */
    appendstr(video_devices, "|dummy", ENVVAR_BUFLEN);
+   appendstr(audio_devices, "|none", ENVVAR_BUFLEN);
 
    /* Registers available devices list (still respects saved device if it exists) */
    envvars[0].key   = "videoproc_videodev";
@@ -455,7 +456,7 @@ static bool open_devices(void)
          (caps.version >> 8) & 0xff, caps.version & 0xff);
 
 #ifdef HAVE_ALSA
-   if (audiodev.value)
+   if (audiodev.value && strcmp(audiodev.value, "none") !=0)
    {
       snd_pcm_hw_params_t *hw_params;
       unsigned int rate;
